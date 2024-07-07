@@ -1,14 +1,26 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import React, { useState } from 'react';
+import { ChakraProvider, Box } from '@chakra-ui/react';
 import InterviewScheduler from './components/InterviewScheduler';
-import './App.css'
+import Quiz from './components/Quiz';
 
-function App() {
+const App = () => {
+  const [showQuiz, setShowQuiz] = useState(false);
+
+  const handleSchedulerFinish = () => {
+    setShowQuiz(true);
+  };
 
   return (
     <ChakraProvider>
-      <InterviewScheduler />
+      <Box p={5}>
+        {!showQuiz ? (
+          <InterviewScheduler onFinish={handleSchedulerFinish} />
+        ) : (
+          <Quiz />
+        )}
+      </Box>
     </ChakraProvider>
-  )
-}
+  );
+};
 
 export default App

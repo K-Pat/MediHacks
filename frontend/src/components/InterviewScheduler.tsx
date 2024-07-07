@@ -16,7 +16,11 @@ import {
 } from '@chakra-ui/react';
 import { format, addDays } from 'date-fns';
 
-const InterviewScheduler = () => {
+interface InterviewSchedulerProps {
+  onFinish: () => void;
+}
+
+const InterviewScheduler: React.FC<InterviewSchedulerProps> = ({ onFinish }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState(1);
   const [interviewType, setInterviewType] = useState('');
@@ -45,6 +49,7 @@ const InterviewScheduler = () => {
     mockSendToBackend(formData);
 
     onClose();
+    onFinish();
   };
 
   // Mock function to simulate sending data to a backend
