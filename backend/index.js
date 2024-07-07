@@ -94,6 +94,21 @@ app.put('/interviews/:id', async (request, response) => {
     }
 });
 
+app.delete('/interviews/:id', async (request, response) => {
+    try{
+        const {id} = request.params; 
+
+        const result = await Interview.findByIdAndDelete(id);
+        if (!result){
+            return response.status(404).json({message: 'Interview not found'});
+        }
+        return response.status(200).send({message: "Interview deleted succsesfully"});
+    }catch (error){
+        console.log(error.message);
+        response.status(500).send({message:error.message});  
+    }
+})
+
 mongoose
     .connect(mongoDBURL)
     .then(() =>{
