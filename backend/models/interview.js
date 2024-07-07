@@ -1,5 +1,18 @@
 import mongoose from "mongoose";
 
-const interviewSchema = mongoose.Schema()
+const interviewSchema = mongoose.Schema({
+    interviewType: {
+        type: String,
+        required: true,
+    },
+    interviewLevel: {
+        type: String,
+        required: true,
+    },
+    selectedTime: {
+        type: String,
+        required: true,
+    },
+});
 
-export const interview = mongoose.model("interview", {type: String}, {level: String}, {time: String});
+export const Interview = mongoose.model("interview", interviewSchema);
