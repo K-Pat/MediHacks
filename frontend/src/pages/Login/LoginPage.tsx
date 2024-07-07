@@ -18,7 +18,7 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
-      navigate('/onboarding'); // Change this to your desired route
+      navigate('/quiz'); // Change this to your desired route
     } catch (err) {
       const error = err as FirebaseError;
       switch (error.code) {
