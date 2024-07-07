@@ -2,8 +2,9 @@
 import React from 'react';
 import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text, Link } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import '../../assets/background.css'
 
-const LoginPage = () => {
+const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -13,14 +14,14 @@ const LoginPage = () => {
 
   return (
     <Box
-      bgGradient="linear(to-r, blue.700, purple.700)"
-      color="white"
+      className="background"
+      color="black"
       minHeight="100vh"
+      width="100vw"
       display="flex"
       alignItems="center"
       justifyContent="center"
       textAlign="center"
-      p={4}
     >
       <VStack spacing={8} width="100%" maxWidth="md">
         <Heading>Login</Heading>
@@ -53,4 +54,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
