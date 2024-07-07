@@ -9,7 +9,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Text,
@@ -66,7 +65,6 @@ const InterviewScheduler = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Interview Scheduler</ModalHeader>
           <ModalBody>
             {step === 1 && (
               <VStack spacing={4}>
@@ -142,8 +140,16 @@ const InterviewScheduler = () => {
           <ModalFooter>
             <HStack spacing={4} w="full">
               {step > 1 && <Button w="full" onClick={handlePrev}>Previous</Button>}
-              {step < 3 && <Button w="full" onClick={handleNext}>Next</Button>}
-              {step === 3 && <Button w="full" onClick={handleFinish}>Finish</Button>}
+              {step < 3 && (
+                <Button w="full" onClick={handleNext} isDisabled={!interviewType || (step === 2 && !interviewLevel)}>
+                  Next
+                </Button>
+              )}
+              {step === 3 && (
+                <Button w="full" onClick={handleFinish} isDisabled={!selectedTime}>
+                  Finish
+                </Button>
+              )}
             </HStack>
           </ModalFooter>
         </ModalContent>
