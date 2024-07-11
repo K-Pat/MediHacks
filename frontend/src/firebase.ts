@@ -9,12 +9,12 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID
+    apiKey: "AIzaSyAw7hiTtmNVSLcWpL4C0YzJeyxTfqawXeI",
+  authDomain: "hackathon-f6a54.firebaseapp.com",
+  projectId: "hackathon-f6a54",
+  storageBucket: "hackathon-f6a54.appspot.com",
+  messagingSenderId: "1082737885407",
+  appId: "1:1082737885407:web:9e744bd082b256cdefe96a"
 };
 
 const app = initializeApp(firebaseConfig);

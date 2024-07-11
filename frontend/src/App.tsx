@@ -1,10 +1,10 @@
-// src/App.tsx
-import { ChakraProvider, Box } from '@chakra-ui/react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/Home/HomePage';
-import SignupPage from './pages/Signup/SignupPage';
-import LoginPage from './pages/Login/LoginPage';
-import Quiz from './components/Quiz';
+import { ChakraProvider, Box } from "@chakra-ui/react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/Home/HomePage";
+import SignupPage from "./pages/Signup/SignupPage";
+import LoginPage from "./pages/Login/LoginPage";
+import Quiz from "./components/Quiz";
+import Meeting from "./components/Meeting"; // The newly created meeting component
 
 const App = () => {
   // const [showQuiz, setShowQuiz] = useState(false);
@@ -22,6 +22,7 @@ const App = () => {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/quiz" element={<Quiz />} />
+            <Route path="/meeting" element={<Meeting />} />
           </Routes>
         </Box>
       </Router>

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Box, Button, Heading, Text, VStack, HStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import Spline from '@splinetool/react-spline';
