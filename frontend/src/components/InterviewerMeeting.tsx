@@ -38,7 +38,7 @@ const InterviewerMeeting = () => {
 
   const handleEndCall = () => {
     setCalling(false);
-    navigate('/dashboard'); // Redirect to the dashboard
+    navigate('/dashboard/form', { state: { role: 'Interviewer', interviewType: 'Advanced Sterilization Techniques' } });
   };
 
   return (

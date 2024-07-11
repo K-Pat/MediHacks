@@ -8,6 +8,8 @@ import InterviewerMeeting from './components/InterviewerMeeting';
 import IntervieweeMeeting from './components/IntervieweeMeeting';
 import Dashboard from "./components/Dashboard";
 import JoinMeeting from './components/JoinMeeting';
+import FormPage from './components/FormPage';
+import CertificatePage from './components/CertificatePage';
 
 
 const App = () => {
@@ -30,6 +32,8 @@ const App = () => {
             <Route path="/join-meeting" element={<JoinMeeting />} />
             <Route path="/meeting/interviewer" element={<InterviewerMeeting />} />
             <Route path="/meeting/interviewee" element={<IntervieweeMeeting />} />
+            <Route path="/dashboard/form" element={<FormPage />} />
+          <Route path="/dashboard/certificate" element={<CertificatePage />} />
           </Routes>
         </Box>
       </Router>
