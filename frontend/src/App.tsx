@@ -5,6 +5,7 @@ import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import Quiz from "./components/Quiz";
 import Dashboard from "./components/Dashboard";
+import JoinMeeting from './components/JoinMeeting';
 import Meeting from "./components/Meeting"; // The newly created meeting component
 
 const App = () => {
@@ -24,7 +25,9 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/dashboard" element={<Dashboard onFinish={() => console.log('Finished')} />} />
-            <Route path="/meeting" element={<Meeting />} />
+            <Route path="/join-meeting" element={<JoinMeeting />} />
+          <Route path="/meeting/interviewer" element={<Meeting />} />
+          <Route path="/meeting/interviewee" element={<Meeting />} />
           </Routes>
         </Box>
       </Router>

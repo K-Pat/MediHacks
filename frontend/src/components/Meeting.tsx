@@ -1,5 +1,5 @@
 // src/components/Meeting.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   LocalUser,
   RemoteUser,
@@ -13,13 +13,13 @@ import {
 import '../styles.css';
 
 const Meeting = () => {
-  const [calling, setCalling] = useState(false);
+  const [calling, setCalling] = useState(true);
   const isConnected = useIsConnected();
-  const [appId, setAppId] = useState('');
-  const [channel, setChannel] = useState('');
-  const [token, setToken] = useState('');
+  const appId = '31a0fa9377994261a17bc848c5628e4c';
+  const channel = 'Meeting';
+  const token = '007eJxTYGCRuX4jKesDu5Glu/n7r2bLv0vZ5/DsDlh9RC7+qsDEHhcFBmPDRIO0REtjc3NLSxMjM8NEQ/OkZAsTi2RTMyOLVJPkmUkT0hoCGRlKbPiYGBkgEMRnZ/BNTS3JzEtnYAAAB1sd5g==';
 
-  useJoin({ appid: appId, channel: channel, token: token ? token : null }, calling);
+  useJoin({ appid: appId, channel: channel, token: token }, calling);
 
   const [micOn, setMic] = useState(true);
   const [cameraOn, setCamera] = useState(true);
@@ -28,6 +28,10 @@ const Meeting = () => {
   usePublish([localMicrophoneTrack, localCameraTrack]);
 
   const remoteUsers = useRemoteUsers();
+
+  useEffect(() => {
+    setCalling(true);
+  }, []);
 
   return (
     <div className="room">
@@ -54,13 +58,7 @@ const Meeting = () => {
         </div>
       ) : (
         <div className="join-room">
-          <img alt="agora-logo" className="logo" src="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" />
-          <input onChange={(e) => setAppId(e.target.value)} placeholder="<Your app ID>" value={appId} />
-          <input onChange={(e) => setChannel(e.target.value)} placeholder="<Your channel Name>" value={channel} />
-          <input onChange={(e) => setToken(e.target.value)} placeholder="<Your token>" value={token} />
-          <button className={`join-channel ${!appId || !channel ? 'disabled' : ''}`} disabled={!appId || !channel} onClick={() => setCalling(true)}>
-            <span>Join Channel</span>
-          </button>
+          <p>Connecting...</p>
         </div>
       )}
       {isConnected && (
