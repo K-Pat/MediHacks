@@ -24,7 +24,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState(1);
   const [interviewType, setInterviewType] = useState('');
-  const [interviewLevel, setInterviewLevel] = useState('');
+  const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
@@ -40,7 +40,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
   const handleFinish = () => {
     const formData = {
       interviewType,
-      interviewLevel,
+      interviewRole,
       selectedTime,
     };
 
@@ -54,7 +54,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
   };
 
   // Mock function to simulate sending data to a backend
-  const mockSendToBackend = async (data: { interviewType: string; interviewLevel: string; selectedTime: string; }) => {
+  const mockSendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; }) => {
     try {
       // Simulate a network request
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -74,47 +74,48 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
           <ModalBody>
             {step === 1 && (
               <VStack spacing={4}>
-                <Heading size="md">Select your interview type</Heading>
+                <Heading size="md">Select your interview subject</Heading>
                 <Button
-                  onClick={() => setInterviewType('Technical')}
-                  colorScheme={interviewType === 'Technical' ? 'teal' : 'gray'}
+                  onClick={() => setInterviewType('Advanced Sterilization Techniques')}
+                  colorScheme={interviewType === 'Advanced Sterilization Techniques' ? 'teal' : 'gray'}
                 >
-                  Technical
+                  Advanced Sterilization Techniques
                 </Button>
                 <Button
-                  onClick={() => setInterviewType('Behavioral')}
-                  colorScheme={interviewType === 'Behavioral' ? 'teal' : 'gray'}
+                  onClick={() => setInterviewType('ARemote Patient Management')}
+                  colorScheme={interviewType === 'Remote Patient Management' ? 'teal' : 'gray'}
                 >
-                  Behavioral
+                  Remote Patient Management
+                </Button>
+                <Button
+                  onClick={() => setInterviewType('Oncology Patient Care Specialization')}
+                  colorScheme={interviewType === 'Oncology Patient Care Specialization' ? 'teal' : 'gray'}
+                >
+                  Oncology Patient Care Specialization
                 </Button>
               </VStack>
             )}
             {step === 2 && (
               <VStack spacing={4}>
-                <Heading size="md">Choose your interview level</Heading>
+                <Heading size="md">Choose your interview role</Heading>
                 <Button
-                  onClick={() => setInterviewLevel('Junior')}
-                  colorScheme={interviewLevel === 'Junior' ? 'teal' : 'gray'}
+                  onClick={() => setInterviewRole('Interviewer')}
+                  colorScheme={interviewRole === 'Interviewer' ? 'teal' : 'gray'}
                 >
-                  Junior
+                  Interviewer
                 </Button>
                 <Button
-                  onClick={() => setInterviewLevel('Mid')}
-                  colorScheme={interviewLevel === 'Mid' ? 'teal' : 'gray'}
+                  onClick={() => setInterviewRole('Interviewee')}
+                  colorScheme={interviewRole === 'Interviewee' ? 'teal' : 'gray'}
                 >
-                  Mid
+                  Interviewee
                 </Button>
-                <Button
-                  onClick={() => setInterviewLevel('Senior')}
-                  colorScheme={interviewLevel === 'Senior' ? 'teal' : 'gray'}
-                >
-                  Senior
-                </Button>
+  
               </VStack>
             )}
             {step === 3 && (
               <VStack spacing={4}>
-                <Heading size="md">Select a time to practice</Heading>
+                <Heading size="md">Select a time to interview</Heading>
                 {days.map((day, index) => (
                   <Box key={index} mb={4}>
                     <Text>{day}</Text>
@@ -147,7 +148,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
             <HStack spacing={4} w="full">
               {step > 1 && <Button w="full" onClick={handlePrev}>Previous</Button>}
               {step < 3 && (
-                <Button w="full" onClick={handleNext} isDisabled={!interviewType || (step === 2 && !interviewLevel)}>
+                <Button w="full" onClick={handleNext} isDisabled={!interviewType || (step === 2 && !interviewRole)}>
                   Next
                 </Button>
               )}
