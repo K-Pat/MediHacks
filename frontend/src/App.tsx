@@ -4,6 +4,7 @@ import HomePage from "./pages/Home/HomePage";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import Quiz from "./components/Quiz";
+import Dashboard from "./components/Dashboard";
 import Meeting from "./components/Meeting"; // The newly created meeting component
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/quiz" element={<Quiz />} />
+            <Route path="/dashboard" element={<Dashboard onFinish={() => console.log('Finished')} />} />
             <Route path="/meeting" element={<Meeting />} />
           </Routes>
         </Box>

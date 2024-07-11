@@ -16,11 +16,11 @@ import {
 } from '@chakra-ui/react';
 import { format, addDays } from 'date-fns';
 
-interface InterviewSchedulerProps {
+interface DashboardProps {
   onFinish: () => void;
 }
 
-const InterviewScheduler: React.FC<InterviewSchedulerProps> = ({ onFinish }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState(1);
   const [interviewType, setInterviewType] = useState('');
@@ -46,6 +46,7 @@ const InterviewScheduler: React.FC<InterviewSchedulerProps> = ({ onFinish }) => 
 
     console.log('Form Data:', formData);
     // Simulate sending data to a backend
+    //CHANGE THIS LINE
     mockSendToBackend(formData);
 
     onClose();
@@ -160,7 +161,7 @@ const InterviewScheduler: React.FC<InterviewSchedulerProps> = ({ onFinish }) => 
         </ModalContent>
       </Modal>
     </>
-  );
+   );
 };
 
-export default InterviewScheduler;
+export default Dashboard;
