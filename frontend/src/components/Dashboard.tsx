@@ -14,7 +14,8 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react';
-import { format, addDays } from 'date-fns';
+import { format, addDays, set } from 'date-fns';
+import { formatISO } from 'date-fns';
 
 interface DashboardProps {
   onFinish: () => void;
@@ -38,15 +39,15 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
   };
 
   const handleFinish = () => {
+    const utcTime = formatISO(new Date(selectedTime));
     const formData = {
       interviewType,
       interviewRole,
-      selectedTime,
+      selectedTime: utcTime,
     };
 
     console.log('Form Data:', formData);
     // Simulate sending data to a backend
-    //CHANGE THIS LINE
     mockSendToBackend(formData);
 
     onClose();
@@ -62,6 +63,17 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
     } catch (error) {
       console.error('Error sending data to backend:', error);
     }
+  };
+
+  const handleTimeSelection = (day: string, time: string) => {
+    const currentDate = new Date();
+    const selectedDate = addDays(currentDate, days.findIndex(d => d === day));
+    const [hours, period] = time.split(' ');
+    const time24 = period === 'PM' ? parseInt(hours) + 12 : parseInt(hours);
+    const dateWithTime = set(selectedDate, { hours: time24, minutes: 0, seconds: 0 });
+    const isoDate = dateWithTime.toISOString();
+    console.log('Selected time:', isoDate);
+    setSelectedTime(isoDate);
   };
 
   return (
@@ -82,7 +94,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
                   Advanced Sterilization Techniques
                 </Button>
                 <Button
-                  onClick={() => setInterviewType('ARemote Patient Management')}
+                  onClick={() => setInterviewType('Remote Patient Management')}
                   colorScheme={interviewType === 'Remote Patient Management' ? 'teal' : 'gray'}
                 >
                   Remote Patient Management
@@ -110,7 +122,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
                 >
                   Interviewee
                 </Button>
-  
               </VStack>
             )}
             {step === 3 && (
@@ -121,20 +132,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
                     <Text>{day}</Text>
                     <HStack spacing={4} mt={2}>
                       <Button
-                        onClick={() => setSelectedTime(`${day} 10 AM`)}
-                        colorScheme={selectedTime === `${day} 10 AM` ? 'teal' : 'gray'}
+                        onClick={() => handleTimeSelection(day, '10 AM')}
+                        colorScheme={selectedTime.includes(`${day}T10:00:00`) ? 'teal' : 'gray'}
                       >
                         10 AM
                       </Button>
                       <Button
-                        onClick={() => setSelectedTime(`${day} 2 PM`)}
-                        colorScheme={selectedTime === `${day} 2 PM` ? 'teal' : 'gray'}
+                        onClick={() => handleTimeSelection(day, '2 PM')}
+                        colorScheme={selectedTime.includes(`${day}T14:00:00`) ? 'teal' : 'gray'}
                       >
                         2 PM
                       </Button>
                       <Button
-                        onClick={() => setSelectedTime(`${day} 6 PM`)}
-                        colorScheme={selectedTime === `${day} 6 PM` ? 'teal' : 'gray'}
+                        onClick={() => handleTimeSelection(day, '6 PM')}
+                        colorScheme={selectedTime.includes(`${day}T18:00:00`) ? 'teal' : 'gray'}
                       >
                         6 PM
                       </Button>
@@ -162,7 +173,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
         </ModalContent>
       </Modal>
     </>
-   );
+  );
 };
 
 export default Dashboard;
