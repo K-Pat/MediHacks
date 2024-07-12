@@ -37,7 +37,7 @@ const SignUpPage = () => {
         uid: userCredential.user.uid,
         email,
       });
-      navigate('/login');
+      navigate('/dashboard');
       console.log('Account Created Successfully');
     } catch (err) {
       const error = err as FirebaseError;

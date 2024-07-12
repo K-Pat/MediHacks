@@ -1,9 +1,21 @@
 // src/components/JoinMeeting.tsx
-import { Box, Button, VStack, Heading } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Box, VStack, Heading, Text } from '@chakra-ui/react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const JoinMeeting = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const interviewType = location.state?.interviewType;
+  const interviewRole = location.state?.interviewRole;
+
+  useEffect(() => {
+    if (interviewRole && interviewType) {
+      setTimeout(() => {
+        navigate(`/meeting/${interviewRole.toLowerCase()}`, { state: { interviewType, interviewRole } });
+      }, 1000); // Adjust the delay as needed
+    }
+  }, [interviewRole, interviewType, navigate]);
 
   return (
     <Box
@@ -14,13 +26,8 @@ const JoinMeeting = () => {
       textAlign="center"
     >
       <VStack spacing={8}>
-        <Heading>Select Your Role</Heading>
-        <Button colorScheme="teal" onClick={() => navigate('/meeting/interviewer')}>
-          Interviewer
-        </Button>
-        <Button colorScheme="teal" onClick={() => navigate('/meeting/interviewee')}>
-          Interviewee
-        </Button>
+        <Heading>Joining Meeting...</Heading>
+        <Text>Please wait while we set things up for you.</Text>
       </VStack>
     </Box>
   );

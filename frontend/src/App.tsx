@@ -28,7 +28,7 @@ const App = () => {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/dashboard" element={<Dashboard onFinish={() => console.log('Finished')} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/join-meeting" element={<JoinMeeting />} />
             <Route path="/meeting/interviewer" element={<InterviewerMeeting />} />
             <Route path="/meeting/interviewee" element={<IntervieweeMeeting />} />

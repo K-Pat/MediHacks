@@ -10,7 +10,7 @@ import {
   usePublish,
   useRemoteUsers,
 } from 'agora-rtc-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles.css';
 import { Box, VStack, Text, Heading } from '@chakra-ui/react';
 
@@ -21,6 +21,8 @@ const InterviewerMeeting = () => {
   const channel = 'Meeting';
   const token = '007eJxTYGCRuX4jKesDu5Glu/n7r2bLv0vZ5/DsDlh9RC7+qsDEHhcFBmPDRIO0REtjc3NLSxMjM8NEQ/OkZAsTi2RTMyOLVJPkmUkT0hoCGRlKbPiYGBkgEMRnZ/BNTS3JzEtnYAAAB1sd5g==';
   const navigate = useNavigate();
+  const location = useLocation();
+  const interviewType = location.state?.interviewType;
 
   useJoin({ appid: appId, channel: channel, token: token }, calling);
 
@@ -38,8 +40,41 @@ const InterviewerMeeting = () => {
 
   const handleEndCall = () => {
     setCalling(false);
-    navigate('/dashboard/form', { state: { role: 'Interviewer', interviewType: 'Advanced Sterilization Techniques' } });
+    navigate('/dashboard/form', { state: { role: 'Interviewer', interviewType } });
   };
+
+  const getQuestions = () => {
+    switch (interviewType) {
+      case 'Advanced Sterilization Techniques':
+        return [
+          "Can you explain your experience with advanced sterilization techniques?",
+          "What are the most common challenges in sterilization processes?",
+          "How do you ensure compliance with sterilization protocols?",
+          "Describe a time when you improved a sterilization process.",
+          "What are the latest advancements in sterilization technology?"
+        ];
+      case 'Remote Patient Management':
+        return [
+          "How do you manage patient care remotely?",
+          "What tools and technologies do you use for remote patient monitoring?",
+          "Describe a challenging case you managed remotely.",
+          "How do you ensure patient engagement and compliance remotely?",
+          "What are the key benefits and drawbacks of remote patient management?"
+        ];
+      case 'Oncology Patient Care Specialization':
+        return [
+          "Describe your approach to oncology patient care.",
+          "How do you manage side effects of cancer treatment?",
+          "What is your experience with multidisciplinary cancer care?",
+          "How do you support patients emotionally and psychologically?",
+          "What are the latest developments in oncology care?"
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const questions = getQuestions();
 
   return (
     <div className="room">
@@ -87,10 +122,9 @@ const InterviewerMeeting = () => {
       <Box p={4} mt={4} borderWidth="1px" borderRadius="md">
         <Heading size="md">Questions for the Interview</Heading>
         <VStack spacing={4} mt={4}>
-          <Text>1. Can you explain your experience with Advanced Sterilization Techniques?</Text>
-          <Text>2. How do you manage patient care remotely?</Text>
-          <Text>3. Describe your approach to oncology patient care.</Text>
-          {/* Add more questions as needed */}
+          {questions.map((question, index) => (
+            <Text key={index}>{index + 1}. {question}</Text>
+          ))}
         </VStack>
       </Box>
     </div>

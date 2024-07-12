@@ -4,7 +4,7 @@ import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text, Link
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/background.css';
-import { auth } from '../../firebase'
+import { auth } from '../../firebase';
 import { FirebaseError } from 'firebase/app';
 
 const Login = () => {
@@ -18,7 +18,7 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
-      navigate('/quiz'); // Change this to your desired route
+      navigate('/dashboard'); // Change this to your desired route
     } catch (err) {
       const error = err as FirebaseError;
       switch (error.code) {

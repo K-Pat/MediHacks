@@ -10,7 +10,7 @@ import {
   usePublish,
   useRemoteUsers,
 } from 'agora-rtc-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles.css';
 
 const IntervieweeMeeting = () => {
@@ -20,6 +20,8 @@ const IntervieweeMeeting = () => {
   const channel = 'Meeting';
   const token = '007eJxTYGCRuX4jKesDu5Glu/n7r2bLv0vZ5/DsDlh9RC7+qsDEHhcFBmPDRIO0REtjc3NLSxMjM8NEQ/OkZAsTi2RTMyOLVJPkmUkT0hoCGRlKbPiYGBkgEMRnZ/BNTS3JzEtnYAAAB1sd5g==';
   const navigate = useNavigate();
+  const location = useLocation();
+  const interviewType = location.state?.interviewType;
 
   useJoin({ appid: appId, channel: channel, token: token }, calling);
 
@@ -37,7 +39,7 @@ const IntervieweeMeeting = () => {
 
   const handleEndCall = () => {
     setCalling(false);
-    navigate('/dashboard/form', { state: { role: 'Interviewee', interviewType: 'Advanced Sterilization Techniques' } });
+    navigate('/dashboard/form', { state: { role: 'Interviewee', interviewType } });
   };
 
   return (

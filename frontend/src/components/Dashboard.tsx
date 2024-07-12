@@ -1,5 +1,6 @@
-// src/components/InterviewScheduler.tsx
+// src/components/Dashboard.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -17,16 +18,13 @@ import {
 import { format, addDays, set } from 'date-fns';
 import { formatISO } from 'date-fns';
 
-interface DashboardProps {
-  onFinish: () => void;
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
+const Dashboard: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [step, setStep] = useState(1);
   const [interviewType, setInterviewType] = useState('');
   const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const navigate = useNavigate();
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
 
@@ -51,7 +49,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onFinish }) => {
     mockSendToBackend(formData);
 
     onClose();
-    onFinish();
+    navigate('/join-meeting', { state: { interviewType, interviewRole } });
   };
 
   // Mock function to simulate sending data to a backend
