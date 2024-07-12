@@ -2,6 +2,7 @@
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import AgoraRTC, { AgoraRTCProvider } from 'agora-rtc-react';
+import './index.css';
 import App from './App';
 
 const rootElement = document.getElementById('root')!;
