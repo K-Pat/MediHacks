@@ -18,34 +18,28 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
-      navigate('/dashboard'); // Change this to your desired route
+      navigate('/dashboard', { state: { email } });
     } catch (err) {
       const error = err as FirebaseError;
       switch (error.code) {
         case 'auth/missing-email':
           setPasswordError('Missing email');
           break;
-
         case 'auth/invalid-email':
           setPasswordError('Invalid email');
           break;
-
         case 'auth/missing-password':
           setPasswordError('Missing password');
           break;
-
         case 'auth/user-not-found':
           setPasswordError('No user found with this email');
           break;
-
         case 'auth/wrong-password':
           setPasswordError('Incorrect password');
           break;
-
         case 'auth/invalid-credential':
           setPasswordError('Incorrect email and/or password');
           break;
-
         default:
           setPasswordError('Login failed: ' + error.message);
       }

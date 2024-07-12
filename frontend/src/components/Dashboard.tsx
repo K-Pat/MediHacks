@@ -1,6 +1,6 @@
 // src/components/Dashboard.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -25,6 +25,8 @@ const Dashboard: React.FC = () => {
   const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email;
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
 
@@ -42,6 +44,7 @@ const Dashboard: React.FC = () => {
       interviewType,
       interviewRole,
       selectedTime: utcTime,
+      email,
     };
 
     console.log('Form Data:', formData);
@@ -49,11 +52,11 @@ const Dashboard: React.FC = () => {
     mockSendToBackend(formData);
 
     onClose();
-    navigate('/join-meeting', { state: { interviewType, interviewRole } });
+    navigate('/join-meeting', { state: { interviewType, interviewRole, email } });
   };
 
   // Mock function to simulate sending data to a backend
-  const mockSendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; }) => {
+  const mockSendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; email: string }) => {
     try {
       // Simulate a network request
       await new Promise((resolve) => setTimeout(resolve, 1000));
