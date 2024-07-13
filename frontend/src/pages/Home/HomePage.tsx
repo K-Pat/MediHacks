@@ -1,4 +1,3 @@
-// src/components/HomePage.tsx
 import {
     Box,
     Button,
@@ -97,7 +96,7 @@ import {
             <Text fontSize="lg" color="gray.600">
               Get started today and unlock new opportunities!
             </Text>
-            <HStack spacing={4}>
+            <VStack spacing={4} align="flex-start">
               <Button
                 colorScheme="teal"
                 size="lg"
@@ -105,7 +104,14 @@ import {
               >
                 Sign Up
               </Button>
-            </HStack>
+              <Button
+                colorScheme="gray"
+                size="lg"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </Button>
+            </VStack>
           </VStack>
   
           <Box width="62%" height="100%">
