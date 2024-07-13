@@ -25,7 +25,7 @@ const App = () => {
   return (
     <ChakraProvider>
       <Router>
-        <Box p={5}>
+        <Box >
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignupPage />} />
