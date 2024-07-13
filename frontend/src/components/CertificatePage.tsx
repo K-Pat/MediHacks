@@ -1,8 +1,7 @@
-// src/components/CertificatePage.tsx
-
 import { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, FormControl, FormLabel, Input, VStack, HStack, Heading, Text, useColorModeValue, Image} from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import html2canvas from 'html2canvas';
 import badgeImage from '../assets/badge.png'; // Ensure you have this image in the specified path
 import PrachiSignature from '../assets/PrachiSignature.png'; // Ensure you have this image in the specified path
@@ -10,6 +9,7 @@ import KavyanSignature from '../assets/KavyanSignature.png'; // Ensure you have 
 
 const CertificatePage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const role = location.state?.role; // either 'Interviewer' or 'Interviewee'
   const interviewType = location.state?.interviewType;
 
@@ -38,13 +38,25 @@ const CertificatePage = () => {
     <Box
       minHeight="100vh"
       display="flex"
+      flexDirection="column"
       alignItems="center"
       justifyContent="center"
       textAlign="center"
       p={4}
       bg={useColorModeValue('gray.50', 'gray.800')}
     >
-      <VStack spacing={8} width="100%" maxWidth="4xl">
+      <HStack
+        position="absolute"
+        top={4}
+        left={4}
+        color="teal.600"
+        cursor="pointer"
+        onClick={() => navigate('/dashboard')}
+      >
+        <ArrowBackIcon />
+        <Text ml={2}>Back to Dashboard</Text>
+      </HStack>
+      <VStack spacing={8} width="100%" maxWidth="4xl" mt={10}>
         <FormControl id="name">
           <FormLabel>Enter your name</FormLabel>
           <Input

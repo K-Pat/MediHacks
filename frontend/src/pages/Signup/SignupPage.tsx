@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text, Link } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text, Link, Flex, HStack, Spacer, useColorModeValue } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
-import '../../assets/background.css';
 import { auth, db } from '../../firebase';
 import { FirebaseError } from 'firebase/app';
 
@@ -40,7 +39,7 @@ const SignUpPage = () => {
       });
       console.log('Document successfully written!');
 
-      navigate('/dashboard', { state: { email } });
+      navigate('/login');
     } catch (err) {
       const error = err as FirebaseError;
       console.error('Error during sign-up:', error);
@@ -56,62 +55,74 @@ const SignUpPage = () => {
       setTimeout(() => {
         setPasswordError('');
       }, 5000);
+      navigate('/login'); // Navigate to login page even if there are errors
     }
   };
 
   return (
-    <Box
-      className="background"
-      color="black"
-      minHeight="100vh"
-      width="100vw"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      textAlign="center"
-    >
-      <VStack spacing={8} width="100%" maxWidth="md">
-        <Heading>Sign Up</Heading>
-        <form onSubmit={handleSubmit}>
-          <VStack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>Email</FormLabel>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              {password.length > 0 && password.length < 6 && (
-                <Text mt={2} color="red.500">
-                  Password must be at least 6 characters long
-                </Text>
-              )}
-              {password.length >= 6 && (
-                <Text mt={2} color="green.500">
-                  Password is valid
-                </Text>
-              )}
-            </FormControl>
-            <FormControl id="confirmPassword">
-              <FormLabel>Confirm Password</FormLabel>
-              <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-              {passwordError && <Text color="red.500">{passwordError}</Text>}
-            </FormControl>
-            <Button type="submit" colorScheme="red">
-              Sign Up
-            </Button>
-          </VStack>
-        </form>
-        <Text>
-          Already have an account?{' '}
-          <Link color="red.300" onClick={() => navigate('/login')}>
-            Login
-          </Link>
-        </Text>
-        <Button colorScheme="red" onClick={() => navigate('/')}>
-          Back to Home
-        </Button>
-      </VStack>
+    <Box minHeight="100vh" width="100vw" bg="#F9FAFB">
+      <Flex as="nav" width="100%" p={6} bg="white" boxShadow="lg" position="fixed" top="0" zIndex="10" alignItems="center">
+        <Box fontWeight="bold" fontSize="2xl" cursor="pointer" onClick={() => navigate("/")} color="teal.600" _hover={{ color: "teal.800" }}>
+          AccredMed
+        </Box>
+        <Spacer />
+        <HStack spacing={10}>
+          <Button variant="link" fontSize="xl" color="teal.600" _hover={{ textDecoration: "underline", color: "teal.800" }} onClick={() => navigate("/about-us")}>
+            About Us
+          </Button>
+          <Button variant="link" fontSize="xl" color="teal.600" _hover={{ textDecoration: "underline", color: "teal.800" }} onClick={() => navigate("/explore-tracks")}>
+            Explore Tracks
+          </Button>
+          <Button variant="link" fontSize="xl" color="teal.600" _hover={{ textDecoration: "underline", color: "teal.800" }} onClick={() => navigate("/coming-soon")}>
+            Coming Soon
+          </Button>
+        </HStack>
+      </Flex>
+
+      <Flex justifyContent="center" alignItems="center" height="100vh" pt="80px">
+        <VStack spacing={8} width="100%" maxWidth="md" p={8} bg="white" borderRadius="lg" boxShadow="lg">
+          <Heading color="teal.600">Sign Up</Heading>
+          <form onSubmit={handleSubmit}>
+            <VStack spacing={4}>
+              <FormControl id="email">
+                <FormLabel>Email</FormLabel>
+                <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} bg={useColorModeValue('gray.100', 'gray.700')} />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} bg={useColorModeValue('gray.100', 'gray.700')} />
+                {password.length > 0 && password.length < 6 && (
+                  <Text mt={2} color="red.500">
+                    Password must be at least 6 characters long
+                  </Text>
+                )}
+                {password.length >= 6 && (
+                  <Text mt={2} color="green.500">
+                    Password is valid
+                  </Text>
+                )}
+              </FormControl>
+              <FormControl id="confirmPassword">
+                <FormLabel>Confirm Password</FormLabel>
+                <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} bg={useColorModeValue('gray.100', 'gray.700')}/>
+                {passwordError && <Text color="red.500">{passwordError}</Text>}
+              </FormControl>
+              <Button type="submit" colorScheme="teal">
+                Sign Up
+              </Button>
+            </VStack>
+          </form>
+          <Text>
+            Already have an account?{' '}
+            <Link color="teal.300" onClick={() => navigate('/login')}>
+              Login
+            </Link>
+          </Text>
+          <Button colorScheme="teal" variant="outline" onClick={() => navigate('/')}>
+            Back to Home
+          </Button>
+        </VStack>
+      </Flex>
     </Box>
   );
 };
