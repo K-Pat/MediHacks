@@ -19,6 +19,10 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { format, addDays, set } from 'date-fns';
+import { formatISO } from 'date-fns';
+import axios from 'axios';
+import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Dashboard: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,10 +74,10 @@ const Dashboard: React.FC = () => {
 
   const handleFinish = async () => {
     const formData = {
-      email,
       interviewType,
       interviewRole,
-      selectedTime,
+      selectedTime: utcTime,
+      email,
     };
 
     console.log('Form Data:', formData);
