@@ -13,8 +13,8 @@ router.post('/', async (request, response) => {
                 message: 'All fields are required: Email, Interview Type, Interview Role, Selected Time'
             });
         }
-
-        const newInterview = { email, interviewType, interviewRole, selectedTime };
+        const matched = "false"
+        const newInterview = { email, interviewType, interviewRole, selectedTime, matched};
         const interview = await Interview.create(newInterview);
 
         // Check for potential match

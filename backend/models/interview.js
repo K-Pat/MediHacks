@@ -24,6 +24,10 @@ const interviewSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    matched: {
+        type: String, 
+        required: true,
+    }
 });
 
 export const Interview = mongoose.model("Interview", interviewSchema);
