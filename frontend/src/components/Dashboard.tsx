@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   VStack,
   HStack,
+  Text,
+  Heading,
+  Flex,
+  Spacer,
+  Avatar,
   useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalBody,
   ModalFooter,
-  Text,
-  Heading,
 } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { format, addDays, set } from 'date-fns';
-import { formatISO } from 'date-fns';
-import axios from 'axios';
-import { auth } from '../firebase'; // Import Firebase auth
-import { onAuthStateChanged } from 'firebase/auth';
 
 const Dashboard: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,20 +27,38 @@ const Dashboard: React.FC = () => {
   const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedTimeString, setSelectedTimeString] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('example@example.com');
   const navigate = useNavigate();
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setEmail(user.email || '');
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  // Dummy data for interviews
+  const dummyInterviews = [
+    {
+      id: 1,
+      interviewType: 'Advanced Sterilization Techniques',
+      interviewRole: 'Interviewer',
+      selectedTime: new Date().toISOString(),
+    },
+    {
+      id: 2,
+      interviewType: 'Remote Patient Management',
+      interviewRole: 'Interviewee',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
+    },
+    {
+      id: 3,
+      interviewType: 'Oncology Patient Care Specialization',
+      interviewRole: 'Interviewer',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
+    },
+    {
+      id: 4,
+      interviewType: 'Remote Patient Management',
+      interviewRole: 'Interviewee',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+    },
+  ];
 
   const handleNext = () => {
     setStep(step + 1);
@@ -51,30 +69,17 @@ const Dashboard: React.FC = () => {
   };
 
   const handleFinish = async () => {
-    const utcTime = formatISO(new Date(selectedTime));
     const formData = {
       email,
       interviewType,
       interviewRole,
-      selectedTime: utcTime,
+      selectedTime,
     };
 
     console.log('Form Data:', formData);
 
-    // Send data to the backend
-    await sendToBackend(formData);
-
     onClose();
     navigate('/join-meeting', { state: { interviewType, interviewRole, email } });
-  };
-
-  const sendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; email: string }) => {
-    try {
-      const response = await axios.post('http://localhost:5555/interviews', data);
-      console.log('Data sent to backend:', response.data);
-    } catch (error) {
-      console.error('Error sending data to backend:', error);
-    }
   };
 
   const handleTimeSelection = (day: string, time: string) => {
@@ -99,9 +104,56 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <>
-      <Button onClick={onOpen}>Open Interview Scheduler</Button>
+    <Box p={4}>
+      <Flex mb={4}>
+        <Heading size="lg">Dashboard</Heading>
+        <Spacer />
+        <Button colorScheme="teal" onClick={onOpen} leftIcon={<AddIcon />}>
+          Schedule New Interview
+        </Button>
+      </Flex>
 
+      <Box mb={8}>
+        <Heading size="md" mb={4}>Upcoming Interviews</Heading>
+        <Flex wrap="wrap">
+          {dummyInterviews
+            .filter(interview => new Date(interview.selectedTime) > new Date())
+            .map(interview => (
+              <Box key={interview.id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
+                <Flex alignItems="center">
+                  <Avatar name={interview.interviewRole} />
+                  <Box ml={3}>
+                    <Text fontWeight="bold">{interview.interviewType}</Text>
+                    <Text>{interview.interviewRole}</Text>
+                    <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
+                  </Box>
+                </Flex>
+              </Box>
+            ))}
+        </Flex>
+      </Box>
+
+      <Box>
+        <Heading size="md" mb={4}>Past Interviews</Heading>
+        <Flex wrap="wrap">
+          {dummyInterviews
+            .filter(interview => new Date(interview.selectedTime) <= new Date())
+            .map(interview => (
+              <Box key={interview.id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
+                <Flex alignItems="center">
+                  <Avatar name={interview.interviewRole} />
+                  <Box ml={3}>
+                    <Text fontWeight="bold">{interview.interviewType}</Text>
+                    <Text>{interview.interviewRole}</Text>
+                    <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
+                  </Box>
+                </Flex>
+              </Box>
+            ))}
+        </Flex>
+      </Box>
+
+      {/* Modal for scheduling interviews */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -149,33 +201,31 @@ const Dashboard: React.FC = () => {
             {step === 3 && (
               <VStack spacing={4}>
                 <Heading size="md">Select a time to interview</Heading>
-                {days.map((day, index) => {
-                  return (
-                    <Box key={index} mb={4}>
-                      <Text>{day}</Text>
-                      <HStack spacing={4} mt={2}>
-                        <Button
-                          onClick={() => handleTimeSelection(day, '10 AM')}
-                          colorScheme={selectedTimeString === `${day} 10 AM` ? 'teal' : 'gray'}
-                        >
-                          10 AM
-                        </Button>
-                        <Button
-                          onClick={() => handleTimeSelection(day, '2 PM')}
-                          colorScheme={selectedTimeString === `${day} 2 PM` ? 'teal' : 'gray'}
-                        >
-                          2 PM
-                        </Button>
-                        <Button
-                          onClick={() => handleTimeSelection(day, '6 PM')}
-                          colorScheme={selectedTimeString === `${day} 6 PM` ? 'teal' : 'gray'}
-                        >
-                          6 PM
-                        </Button>
-                      </HStack>
-                    </Box>
-                  );
-                })}
+                {days.map((day, index) => (
+                  <Box key={index} mb={4}>
+                    <Text>{day}</Text>
+                    <HStack spacing={4} mt={2}>
+                      <Button
+                        onClick={() => handleTimeSelection(day, '10 AM')}
+                        colorScheme={selectedTimeString === `${day} 10 AM` ? 'teal' : 'gray'}
+                      >
+                        10 AM
+                      </Button>
+                      <Button
+                        onClick={() => handleTimeSelection(day, '2 PM')}
+                        colorScheme={selectedTimeString === `${day} 2 PM` ? 'teal' : 'gray'}
+                      >
+                        2 PM
+                      </Button>
+                      <Button
+                        onClick={() => handleTimeSelection(day, '6 PM')}
+                        colorScheme={selectedTimeString === `${day} 6 PM` ? 'teal' : 'gray'}
+                      >
+                        6 PM
+                      </Button>
+                    </HStack>
+                  </Box>
+                ))}
               </VStack>
             )}
           </ModalBody>
@@ -196,7 +246,7 @@ const Dashboard: React.FC = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   );
 };
 
