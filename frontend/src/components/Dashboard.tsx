@@ -88,7 +88,8 @@ const Dashboard: React.FC = () => {
     await sendToBackend(formData);
 
     onClose();
-    navigate('/join-meeting', { state: { interviewType, interviewRole, email } });
+    navigate('/dashboard');
+    window.location.reload();
   };
 
   const sendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; email: string }) => {
