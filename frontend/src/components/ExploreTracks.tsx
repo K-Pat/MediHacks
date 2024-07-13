@@ -12,16 +12,22 @@ const ExploreTracks = () => {
   const navigate = useNavigate();
 
   return (
-    <Box position="relative" width="100vw" minHeight="100vh" overflow="hidden" bg="#f9fafb">
-      <Flex as="nav" width="100%" p={4} bg="white" boxShadow="sm" position="absolute" top="0" zIndex="10">
-        <Box fontWeight="bold" fontSize="2xl" cursor="pointer" onClick={() => navigate('/')}>
+    <Box position="relative" width="100vw" minHeight="100vh" overflow="hidden" bg="#F9FAFB">
+      <Flex as="nav" width="100%" p={6} bg="white" boxShadow="lg" position="absolute" top="0" zIndex="10" alignItems="center">
+        <Box fontWeight="bold" fontSize="2xl" cursor="pointer" onClick={() => navigate('/')} color="teal.600" _hover={{ color: 'teal.800' }}>
           AccredMed
         </Box>
         <Spacer />
-        <HStack spacing={8}>
-          <Button variant="link" fontSize="lg" onClick={() => navigate('/about-us')}>About Us</Button>
-          <Button variant="link" fontSize="lg" onClick={() => navigate('/explore-tracks')}>Explore Tracks</Button>
-          <Button variant="link" fontSize="lg" onClick={() => navigate('/coming-soon')}>Coming Soon</Button>
+        <HStack spacing={10}>
+          <Button variant="link" fontSize="xl" color="teal.600" _hover={{ textDecoration: 'underline', color: 'teal.800' }} onClick={() => navigate('/about-us')}>
+            About Us
+          </Button>
+          <Button variant="link" fontSize="xl" color="teal.600" _hover={{ textDecoration: 'underline', color: 'teal.800' }} onClick={() => navigate('/explore-tracks')}>
+            Explore Tracks
+          </Button>
+          <Button variant="link" fontSize="xl" color="teal.600" _hover={{ textDecoration: 'underline', color: 'teal.800' }} onClick={() => navigate('/coming-soon')}>
+            Coming Soon
+          </Button>
         </HStack>
       </Flex>
       

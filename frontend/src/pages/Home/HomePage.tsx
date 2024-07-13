@@ -26,43 +26,49 @@ import {
         <Flex
           as="nav"
           width="100%"
-          p={4}
+          p={6}
           bg="white"
-          boxShadow="sm"
+          boxShadow="lg"
           position="absolute"
           top="0"
           zIndex="10"
+          alignItems="center"
         >
           <Box
             fontWeight="bold"
-            fontSize="xl"
+            fontSize="2xl"
             cursor="pointer"
             onClick={() => navigate("/")}
+            color="teal.600"
+            _hover={{ color: "teal.800" }}
           >
             AccredMed
           </Box>
           <Spacer />
-          <HStack spacing={8}>
+          <HStack spacing={10}>
             <Button
               variant="link"
-              fontSize="lg"
+              fontSize="xl"
               color="teal.600"
+              _hover={{ textDecoration: "underline", color: "teal.800" }}
               onClick={() => navigate("/about-us")}
             >
               About Us
             </Button>
             <Button
               variant="link"
-              fontSize="lg"
+              fontSize="xl"
               color="teal.600"
+              _hover={{ textDecoration: "underline", color: "teal.800" }}
               onClick={() => navigate("/explore-tracks")}
             >
               Explore Tracks
             </Button>
             <Button
               variant="link"
-              fontSize="lg"
+              fontSize="xl"
               color="teal.600"
+              _hover={{ textDecoration: "underline", color: "teal.800" }}
               onClick={() => navigate("/coming-soon")}
             >
               Coming Soon
