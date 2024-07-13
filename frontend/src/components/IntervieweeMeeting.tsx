@@ -54,7 +54,7 @@ const IntervieweeMeeting = () => {
       {isConnected ? (
         <Flex flexDirection="column" alignItems="center" justifyContent="center" width="80%">
           <Flex flexDirection="row" alignItems="center" justifyContent="space-around" width="100%" mb={4}>
-            <Box className="user" width="45%" borderWidth="1px" borderRadius="lg" overflow="hidden">
+            <Box className="user" width="45%" height="50vh" borderWidth="1px" borderRadius="lg" overflow="hidden">
               <LocalUser
                 audioTrack={localMicrophoneTrack}
                 cameraOn={cameraOn}
@@ -66,7 +66,7 @@ const IntervieweeMeeting = () => {
               </LocalUser>
             </Box>
             {remoteUsers.map((user) => (
-              <Box className="user" key={user.uid} width="45%" borderWidth="1px" borderRadius="lg" overflow="hidden">
+              <Box className="user" key={user.uid} width="45%" height="50vh" borderWidth="1px" borderRadius="lg" overflow="hidden">
                 <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
                   <Text className="user-name" textAlign="center">{user.uid}</Text>
                 </RemoteUser>
