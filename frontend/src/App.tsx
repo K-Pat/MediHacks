@@ -9,6 +9,9 @@ import IntervieweeMeeting from './components/IntervieweeMeeting';
 import Dashboard from "./components/Dashboard";
 import JoinMeeting from './components/JoinMeeting';
 import FormPage from './components/FormPage';
+import AboutUs from './components/AboutUs';
+import ExploreTracks from './components/ExploreTracks';
+import ComingSoon from './components/ComingSoon';
 import CertificatePage from './components/CertificatePage';
 
 
@@ -29,6 +32,9 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/explore-tracks" element={<ExploreTracks />} />
+        <Route path="/coming-soon" element={<ComingSoon />} />
             <Route path="/join-meeting" element={<JoinMeeting />} />
             <Route path="/meeting/interviewer" element={<InterviewerMeeting />} />
             <Route path="/meeting/interviewee" element={<IntervieweeMeeting />} />
