@@ -18,7 +18,7 @@ const IntervieweeMeeting = () => {
   const isConnected = useIsConnected();
   const appId = '31a0fa9377994261a17bc848c5628e4c';
   const channel = 'Meeting';
-  const token = '007eJxTYGCRuX4jKesDu5Glu/n7r2bLv0vZ5/DsDlh9RC7+qsDEHhcFBmPDRIO0REtjc3NLSxMjM8NEQ/OkZAsTi2RTMyOLVJPkmUkT0hoCGRlKbPiYGBkgEMRnZ/BNTS3JzEtnYAAAB1sd5g==';
+  const token = '007eJxTYLjs8ulcV37gmnSHQ+92ax27tUl/z86DISu18tYdL2q1+5SuwGBsmGiQlmhpbG5uaWliZGaYaGielGxhYpFsamZkkWqSnPFzYlpDICMDm0UcIyMDBIL47Ay+qaklmXnpDAwAeDIiQQ==';
   const navigate = useNavigate();
   const location = useLocation();
   const interviewType = location.state?.interviewType;

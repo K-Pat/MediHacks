@@ -28,7 +28,6 @@ const HomePage = () => {
         alignItems="center"
         justifyContent="space-around"
         color="black"
-        pointerEvents="none"
         p={8}
       >
         <VStack spacing={6} align="flex-start" pointerEvents="all" maxW="lg">
@@ -45,7 +44,7 @@ const HomePage = () => {
         </VStack>
         
         <Box width="60%" height="100%">
-          <Spline scene="https://prod.spline.design/ojM1d1nVcPacEoyY/scene.splinecode" style={{ width: '100%', height: '100vh' }} />
+        <Spline scene="https://prod.spline.design/ojM1d1nVcPacEoyY/scene.splinecode" />
         </Box>
       </Flex>
     </Box>
