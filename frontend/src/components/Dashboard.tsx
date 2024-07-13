@@ -1,21 +1,21 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   VStack,
   HStack,
-  Text,
-  Heading,
-  Flex,
-  Spacer,
-  Avatar,
   useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalBody,
   ModalFooter,
+  Text,
+  Heading,
+  Flex,
+  Spacer,
+  Avatar,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { format, addDays, set } from 'date-fns';
@@ -31,38 +31,20 @@ const Dashboard: React.FC = () => {
   const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedTimeString, setSelectedTimeString] = useState('');
-  const [email, setEmail] = useState('example@example.com');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
 
-  // Dummy data for interviews
-  const dummyInterviews = [
-    {
-      id: 1,
-      interviewType: 'Advanced Sterilization Techniques',
-      interviewRole: 'Interviewer',
-      selectedTime: new Date().toISOString(),
-    },
-    {
-      id: 2,
-      interviewType: 'Remote Patient Management',
-      interviewRole: 'Interviewee',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
-    },
-    {
-      id: 3,
-      interviewType: 'Oncology Patient Care Specialization',
-      interviewRole: 'Interviewer',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
-    },
-    {
-      id: 4,
-      interviewType: 'Remote Patient Management',
-      interviewRole: 'Interviewee',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
-    },
-  ];
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setEmail(user.email || '');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleNext = () => {
     setStep(step + 1);
@@ -73,6 +55,7 @@ const Dashboard: React.FC = () => {
   };
 
   const handleFinish = async () => {
+    const utcTime = formatISO(new Date(selectedTime));
     const formData = {
       interviewType,
       interviewRole,
@@ -82,8 +65,20 @@ const Dashboard: React.FC = () => {
 
     console.log('Form Data:', formData);
 
+    // Send data to the backend
+    await sendToBackend(formData);
+
     onClose();
     navigate('/join-meeting', { state: { interviewType, interviewRole, email } });
+  };
+
+  const sendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; email: string }) => {
+    try {
+      const response = await axios.post('http://localhost:5555/interviews', data);
+      console.log('Data sent to backend:', response.data);
+    } catch (error) {
+      console.error('Error sending data to backend:', error);
+    }
   };
 
   const handleTimeSelection = (day: string, time: string) => {
@@ -106,6 +101,49 @@ const Dashboard: React.FC = () => {
     setSelectedTime(isoDate);
     setSelectedTimeString(timeString);
   };
+
+  // Dummy data for interviews
+  const dummyInterviews = [
+    {
+      id: 1,
+      interviewType: 'Advanced Sterilization Techniques',
+      interviewRole: 'Interviewer',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
+    },
+    {
+      id: 2,
+      interviewType: 'Remote Patient Management',
+      interviewRole: 'Interviewee',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
+    },
+    {
+      id: 3,
+      interviewType: 'Oncology Patient Care Specialization',
+      interviewRole: 'Interviewer',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
+    },
+    {
+      id: 4,
+      interviewType: 'Remote Patient Management',
+      interviewRole: 'Interviewee',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+    },
+  ];
+
+  const dummyPendingMatches = [
+    {
+      id: 5,
+      interviewType: 'Cardiology Techniques',
+      interviewRole: 'Interviewee',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() + 6)).toISOString(),
+    },
+    {
+      id: 6,
+      interviewType: 'Pediatric Care',
+      interviewRole: 'Interviewer',
+      selectedTime: new Date(new Date().setDate(new Date().getDate() + 8)).toISOString(),
+    },
+  ];
 
   return (
     <Box p={4}>
@@ -134,6 +172,24 @@ const Dashboard: React.FC = () => {
                 </Flex>
               </Box>
             ))}
+        </Flex>
+      </Box>
+
+      <Box mb={8}>
+        <Heading size="md" mb={4}>Pending Matches</Heading>
+        <Flex wrap="wrap">
+          {dummyPendingMatches.map(match => (
+            <Box key={match.id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
+              <Flex alignItems="center">
+                <Avatar name={match.interviewRole} />
+                <Box ml={3}>
+                  <Text fontWeight="bold">{match.interviewType}</Text>
+                  <Text>{match.interviewRole}</Text>
+                  <Text>{new Date(match.selectedTime).toLocaleString()}</Text>
+                </Box>
+              </Flex>
+            </Box>
+          ))}
         </Flex>
       </Box>
 
