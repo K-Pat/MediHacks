@@ -1,4 +1,3 @@
-// src/components/SignUp.tsx
 import React, { useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Text, Link } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -22,31 +21,36 @@ const SignUpPage = () => {
       setTimeout(() => {
         setPasswordError('');
       }, 5000);
-      return; // Stop the form submission
+      return;
     }
     if (password !== confirmPassword) {
       setPasswordError('Passwords do not match.');
       setTimeout(() => {
         setPasswordError('');
       }, 5000);
-      return; // Stop the form submission
+      return;
     }
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User credential:', userCredential);
+
       await addDoc(collection(db, 'users'), {
         uid: userCredential.user.uid,
         email,
       });
+      console.log('Document successfully written!');
+
       navigate('/dashboard', { state: { email } });
-      console.log('Account Created Successfully');
     } catch (err) {
       const error = err as FirebaseError;
+      console.error('Error during sign-up:', error);
       if (error.code === 'auth/email-already-in-use') {
         setPasswordError('This email is already in use. Please use a different email');
       } else if (error.code === 'auth/weak-password') {
         setPasswordError('Password must be longer than 6 characters. Please try a different password');
+      } else if (error.code === 'permission-denied') {
+        setPasswordError('You do not have permission to perform this action. Please check your Firestore rules.');
       } else {
-        console.error('Signup failed: ', error.message);
         setPasswordError('Failed to create account. Please try again later');
       }
       setTimeout(() => {
