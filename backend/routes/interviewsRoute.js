@@ -42,32 +42,33 @@ router.post('/', async (request, response) => {
     }
 });
 
-const sendMatchEmails = async (interview, match) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'kavyanpatel1104@gmail.com',
-            pass: 'zjpf lhgy uozj zdof'
-        }
-    });
-
-    const mailOptions1 = {
-        from: 'kavyanpatel1104@gmail.com',
-        to: interview.email,
-        subject: 'Interview Match Found',
-        text: `You have been matched for an interview on ${interview.selectedTime} with ${match.email}.`
-    };
-
-    const mailOptions2 = {
-        from: 'kavyanpatel1104@gmail.com',
-        to: match.email,
-        subject: 'Interview Match Found',
-        text: `You have been matched for an interview on ${match.selectedTime} with ${interview.email}.`
-    };
-
-    await transporter.sendMail(mailOptions1);
-    await transporter.sendMail(mailOptions2);
-};
+    const sendMatchEmails = async (interview, match) => {
+        const pstTime = format(new Date(interview.selectedTime), 'MMMM d, yyyy h:mm a', { timeZone: 'America/Los_Angeles' });
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'kavyanpatel1104@gmail.com',
+                pass: 'zjpf lhgy uozj zdof'
+            }
+        });
+      
+        const mailOptions1 = {
+          from: 'kavyanpatel1104@gmail.com',
+          to: interview.email,
+          subject: 'Interview Match Found',
+          text: `You have matched with ${match.email} for an interview at ${pstTime} (PST). Please navigate to your dashboard to be able to join your meeting.`
+        };
+      
+        const mailOptions2 = {
+          from: 'kavyanpatel1104@gmail.com',
+          to: match.email,
+          subject: 'Interview Match Found',
+          text: `You have matched with ${interview.email} for an interview at ${pstTime} (PST). Please navigate to your dashboard to be able to join your meeting.`
+        };
+      
+        await transporter.sendMail(mailOptions1);
+        await transporter.sendMail(mailOptions2);
+      };
 
 router.get('/', async (request, response) => {
     try {

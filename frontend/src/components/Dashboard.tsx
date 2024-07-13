@@ -23,6 +23,7 @@ import { formatISO } from 'date-fns';
 import axios from 'axios';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { Interview } from '../types/Interview';  // Import the interface
 
 const Dashboard: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,6 +33,7 @@ const Dashboard: React.FC = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedTimeString, setSelectedTimeString] = useState('');
   const [email, setEmail] = useState('');
+  const [interviews, setInterviews] = useState<Interview[]>([]);  // Type the state
   const navigate = useNavigate();
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
@@ -45,6 +47,23 @@ const Dashboard: React.FC = () => {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const fetchInterviews = async () => {
+      try {
+        const response = await axios.get('http://localhost:5555/interviews', {
+          params: { email },
+        });
+        setInterviews(response.data.data);
+      } catch (error) {
+        console.error('Error fetching interviews:', error);
+      }
+    };
+
+    if (email) {
+      fetchInterviews();
+    }
+  }, [email]);
 
   const handleNext = () => {
     setStep(step + 1);
@@ -102,48 +121,10 @@ const Dashboard: React.FC = () => {
     setSelectedTimeString(timeString);
   };
 
-  // Dummy data for interviews
-  const dummyInterviews = [
-    {
-      id: 1,
-      interviewType: 'Advanced Sterilization Techniques',
-      interviewRole: 'Interviewer',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
-    },
-    {
-      id: 2,
-      interviewType: 'Remote Patient Management',
-      interviewRole: 'Interviewee',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
-    },
-    {
-      id: 3,
-      interviewType: 'Oncology Patient Care Specialization',
-      interviewRole: 'Interviewer',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
-    },
-    {
-      id: 4,
-      interviewType: 'Remote Patient Management',
-      interviewRole: 'Interviewee',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
-    },
-  ];
-
-  const dummyPendingMatches = [
-    {
-      id: 5,
-      interviewType: 'Cardiology Techniques',
-      interviewRole: 'Interviewee',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() + 6)).toISOString(),
-    },
-    {
-      id: 6,
-      interviewType: 'Pediatric Care',
-      interviewRole: 'Interviewer',
-      selectedTime: new Date(new Date().setDate(new Date().getDate() + 8)).toISOString(),
-    },
-  ];
+  // Categorize interviews
+  const upcomingInterviews = interviews.filter(interview => interview.matched !== 'false' && new Date(interview.selectedTime) > new Date());
+  const pendingMatches = interviews.filter(interview => interview.matched === 'false' && new Date(interview.selectedTime) > new Date());
+  const pastInterviews = interviews.filter(interview => new Date(interview.selectedTime) <= new Date());
 
   return (
     <Box p={4}>
@@ -158,34 +139,39 @@ const Dashboard: React.FC = () => {
       <Box mb={8}>
         <Heading size="md" mb={4}>Upcoming Interviews</Heading>
         <Flex wrap="wrap">
-          {dummyInterviews
-            .filter(interview => new Date(interview.selectedTime) > new Date())
-            .map(interview => (
-              <Box key={interview.id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
-                <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
-                  <Box ml={3}>
-                    <Text fontWeight="bold">{interview.interviewType}</Text>
-                    <Text>{interview.interviewRole}</Text>
-                    <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
-                  </Box>
-                </Flex>
-              </Box>
-            ))}
+          {upcomingInterviews.map(interview => (
+            <Box key={interview._id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
+              <Flex alignItems="center">
+                <Avatar name={interview.interviewRole} />
+                <Box ml={3}>
+                  <Text fontWeight="bold">{interview.interviewType}</Text>
+                  <Text>{interview.interviewRole}</Text>
+                  <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
+                </Box>
+              </Flex>
+              <Button
+                mt={2}
+                colorScheme="teal"
+                onClick={() => navigate('/join-meeting', { state: { interviewType: interview.interviewType, interviewRole: interview.interviewRole, email } })}
+              >
+                Join
+              </Button>
+            </Box>
+          ))}
         </Flex>
       </Box>
 
       <Box mb={8}>
         <Heading size="md" mb={4}>Pending Matches</Heading>
         <Flex wrap="wrap">
-          {dummyPendingMatches.map(match => (
-            <Box key={match.id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
+          {pendingMatches.map(interview => (
+            <Box key={interview._id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
               <Flex alignItems="center">
-                <Avatar name={match.interviewRole} />
+                <Avatar name={interview.interviewRole} />
                 <Box ml={3}>
-                  <Text fontWeight="bold">{match.interviewType}</Text>
-                  <Text>{match.interviewRole}</Text>
-                  <Text>{new Date(match.selectedTime).toLocaleString()}</Text>
+                  <Text fontWeight="bold">{interview.interviewType}</Text>
+                  <Text>{interview.interviewRole}</Text>
+                  <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
                 </Box>
               </Flex>
             </Box>
@@ -196,20 +182,18 @@ const Dashboard: React.FC = () => {
       <Box>
         <Heading size="md" mb={4}>Past Interviews</Heading>
         <Flex wrap="wrap">
-          {dummyInterviews
-            .filter(interview => new Date(interview.selectedTime) <= new Date())
-            .map(interview => (
-              <Box key={interview.id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
-                <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
-                  <Box ml={3}>
-                    <Text fontWeight="bold">{interview.interviewType}</Text>
-                    <Text>{interview.interviewRole}</Text>
-                    <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
-                  </Box>
-                </Flex>
-              </Box>
-            ))}
+          {pastInterviews.map(interview => (
+            <Box key={interview._id} p={4} borderWidth={1} borderRadius="md" m={2} w="240px">
+              <Flex alignItems="center">
+                <Avatar name={interview.interviewRole} />
+                <Box ml={3}>
+                  <Text fontWeight="bold">{interview.interviewType}</Text>
+                  <Text>{interview.interviewRole}</Text>
+                  <Text>{new Date(interview.selectedTime).toLocaleString()}</Text>
+                </Box>
+              </Flex>
+            </Box>
+          ))}
         </Flex>
       </Box>
 
