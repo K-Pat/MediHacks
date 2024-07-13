@@ -1,6 +1,7 @@
 // backend/routes/interviewRoutes.js
 import express from 'express';
 import { Interview } from '../models/interview.js';
+import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
@@ -9,18 +10,59 @@ router.post('/', async (request, response) => {
         const { email, interviewType, interviewRole, selectedTime } = request.body;
         if (!email || !interviewType || !interviewRole || !selectedTime) {
             return response.status(400).send({
-                message: 'All fields are required: Email, Interview Type, Interview Level, Selected Time'
+                message: 'All fields are required: Email, Interview Type, Interview Role, Selected Time'
             });
         }
 
         const newInterview = { email, interviewType, interviewRole, selectedTime };
         const interview = await Interview.create(newInterview);
+
+        // Check for potential match
+        const potentialMatch = await Interview.findOne({
+            interviewType,
+            interviewRole: interviewRole === 'Interviewer' ? 'Interviewee' : 'Interviewer',
+            selectedTime,
+            email: { $ne: email }
+        });
+
+        if (potentialMatch) {
+            // Send email notifications
+            await sendMatchEmails(interview, potentialMatch);
+        }
+
         return response.status(201).send(interview);
     } catch (error) {
         console.log(error.message);
         response.status(500).send({ message: error.message });
     }
 });
+
+const sendMatchEmails = async (interview, match) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'kavyanpatel1104@gmail.com',
+            pass: 'zjpf lhgy uozj zdof'
+        }
+    });
+
+    const mailOptions1 = {
+        from: 'kavyanpatel1104@gmail.com',
+        to: interview.email,
+        subject: 'Interview Match Found',
+        text: `You have been matched for an interview on ${interview.selectedTime} with ${match.email}.`
+    };
+
+    const mailOptions2 = {
+        from: 'kavyanpatel1104@gmail.com',
+        to: match.email,
+        subject: 'Interview Match Found',
+        text: `You have been matched for an interview on ${match.selectedTime} with ${interview.email}.`
+    };
+
+    await transporter.sendMail(mailOptions1);
+    await transporter.sendMail(mailOptions2);
+};
 
 router.get('/', async (request, response) => {
     try {

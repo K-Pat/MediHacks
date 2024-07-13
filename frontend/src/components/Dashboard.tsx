@@ -17,7 +17,7 @@ import {
 import { format, addDays, set } from 'date-fns';
 import { formatISO } from 'date-fns';
 import axios from 'axios';
-import { auth } from '../firebase'; // Import Firebase auth
+import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const Dashboard: React.FC = () => {
@@ -53,10 +53,10 @@ const Dashboard: React.FC = () => {
   const handleFinish = async () => {
     const utcTime = formatISO(new Date(selectedTime));
     const formData = {
-      email,
       interviewType,
       interviewRole,
       selectedTime: utcTime,
+      email,
     };
 
     console.log('Form Data:', formData);
