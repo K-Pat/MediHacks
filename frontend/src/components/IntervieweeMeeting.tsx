@@ -11,6 +11,13 @@ import {
   useRemoteUsers,
 } from 'agora-rtc-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  Box,
+  Flex,
+  Button,
+  Text,
+  Heading,
+} from '@chakra-ui/react';
 import '../styles.css';
 
 const IntervieweeMeeting = () => {
@@ -43,49 +50,47 @@ const IntervieweeMeeting = () => {
   };
 
   return (
-    <div className="room">
+    <Box width="100vw" height="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" bg="#F9FAFB">
       {isConnected ? (
-        <div className="user-list">
-          <div className="user">
-            <LocalUser
-              audioTrack={localMicrophoneTrack}
-              cameraOn={cameraOn}
-              micOn={micOn}
-              videoTrack={localCameraTrack}
-              cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
-            >
-              <samp className="user-name">You</samp>
-            </LocalUser>
-          </div>
-          {remoteUsers.map((user) => (
-            <div className="user" key={user.uid}>
-              <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
-                <samp className="user-name">{user.uid}</samp>
-              </RemoteUser>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="join-room">
-          <p>Connecting...</p>
-        </div>
-      )}
-      {isConnected && (
-        <div className="control">
-          <div className="left-control">
-            <button className="btn" onClick={() => setMic((a) => !a)}>
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" width="80%">
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-around" width="100%" mb={4}>
+            <Box className="user" width="45%" borderWidth="1px" borderRadius="lg" overflow="hidden">
+              <LocalUser
+                audioTrack={localMicrophoneTrack}
+                cameraOn={cameraOn}
+                micOn={micOn}
+                videoTrack={localCameraTrack}
+                cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
+              >
+                <Text className="user-name" textAlign="center">You</Text>
+              </LocalUser>
+            </Box>
+            {remoteUsers.map((user) => (
+              <Box className="user" key={user.uid} width="45%" borderWidth="1px" borderRadius="lg" overflow="hidden">
+                <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
+                  <Text className="user-name" textAlign="center">{user.uid}</Text>
+                </RemoteUser>
+              </Box>
+            ))}
+          </Flex>
+          <Flex justifyContent="center" mb={4}>
+            <Button onClick={() => setMic((a) => !a)} m={2}>
               <i className={`i-microphone ${!micOn ? 'off' : ''}`} />
-            </button>
-            <button className="btn" onClick={() => setCamera((a) => !a)}>
+            </Button>
+            <Button onClick={() => setCamera((a) => !a)} m={2}>
               <i className={`i-camera ${!cameraOn ? 'off' : ''}`} />
-            </button>
-          </div>
-          <button className={`btn btn-phone ${calling ? 'btn-phone-active' : ''}`} onClick={handleEndCall}>
-            <i className="i-phone-hangup" />
-          </button>
-        </div>
+            </Button>
+            <Button onClick={handleEndCall} m={2}>
+              <i className="i-phone-hangup" />
+            </Button>
+          </Flex>
+        </Flex>
+      ) : (
+        <Box textAlign="center">
+          <Heading size="lg">Connecting...</Heading>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
