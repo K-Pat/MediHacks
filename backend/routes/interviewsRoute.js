@@ -13,8 +13,8 @@ router.post('/', async (request, response) => {
                 message: 'All fields are required: Email, Interview Type, Interview Role, Selected Time'
             });
         }
-        const matched = "false"
-        const newInterview = { email, interviewType, interviewRole, selectedTime, matched};
+        const matched = "false";
+        const newInterview = { email, interviewType, interviewRole, selectedTime, matched };
         const interview = await Interview.create(newInterview);
 
         // Check for potential match
@@ -22,10 +22,15 @@ router.post('/', async (request, response) => {
             interviewType,
             interviewRole: interviewRole === 'Interviewer' ? 'Interviewee' : 'Interviewer',
             selectedTime,
-            email: { $ne: email }
+            email: { $ne: email },
+            matched: "false"
         });
 
         if (potentialMatch) {
+            // Update the matched property for both interviews
+            await Interview.findByIdAndUpdate(interview._id, { matched: potentialMatch.email }, { new: true });
+            await Interview.findByIdAndUpdate(potentialMatch._id, { matched: interview.email }, { new: true });
+
             // Send email notifications
             await sendMatchEmails(interview, potentialMatch);
         }
