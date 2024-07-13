@@ -1,6 +1,5 @@
-// src/components/Dashboard.tsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -27,6 +26,7 @@ const Dashboard: React.FC = () => {
   const [interviewType, setInterviewType] = useState('');
   const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTimeString, setSelectedTimeString] = useState('');
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
@@ -79,13 +79,23 @@ const Dashboard: React.FC = () => {
 
   const handleTimeSelection = (day: string, time: string) => {
     const currentDate = new Date();
-    const selectedDate = addDays(currentDate, days.findIndex(d => d === day));
+    const selectedDateIndex = days.findIndex(d => d === day);
+    const selectedDate = addDays(currentDate, selectedDateIndex);
     const [hours, period] = time.split(' ');
-    const time24 = period === 'PM' ? parseInt(hours) + 12 : parseInt(hours);
-    const dateWithTime = set(selectedDate, { hours: time24, minutes: 0, seconds: 0 });
+    let hoursInt = parseInt(hours);
+
+    if (period === 'PM' && hoursInt !== 12) {
+      hoursInt += 12;
+    } else if (period === 'AM' && hoursInt === 12) {
+      hoursInt = 0;
+    }
+
+    const dateWithTime = set(selectedDate, { hours: hoursInt, minutes: 0, seconds: 0 });
     const isoDate = dateWithTime.toISOString();
-    console.log('Selected time:', isoDate);
+    const timeString = `${day} ${time}`;
+    console.log('Selected time:', isoDate, timeString);
     setSelectedTime(isoDate);
+    setSelectedTimeString(timeString);
   };
 
   return (
@@ -139,31 +149,33 @@ const Dashboard: React.FC = () => {
             {step === 3 && (
               <VStack spacing={4}>
                 <Heading size="md">Select a time to interview</Heading>
-                {days.map((day, index) => (
-                  <Box key={index} mb={4}>
-                    <Text>{day}</Text>
-                    <HStack spacing={4} mt={2}>
-                      <Button
-                        onClick={() => handleTimeSelection(day, '10 AM')}
-                        colorScheme={selectedTime.includes(`${day}T10:00:00`) ? 'teal' : 'gray'}
-                      >
-                        10 AM
-                      </Button>
-                      <Button
-                        onClick={() => handleTimeSelection(day, '2 PM')}
-                        colorScheme={selectedTime.includes(`${day}T14:00:00`) ? 'teal' : 'gray'}
-                      >
-                        2 PM
-                      </Button>
-                      <Button
-                        onClick={() => handleTimeSelection(day, '6 PM')}
-                        colorScheme={selectedTime.includes(`${day}T18:00:00`) ? 'teal' : 'gray'}
-                      >
-                        6 PM
-                      </Button>
-                    </HStack>
-                  </Box>
-                ))}
+                {days.map((day, index) => {
+                  return (
+                    <Box key={index} mb={4}>
+                      <Text>{day}</Text>
+                      <HStack spacing={4} mt={2}>
+                        <Button
+                          onClick={() => handleTimeSelection(day, '10 AM')}
+                          colorScheme={selectedTimeString === `${day} 10 AM` ? 'teal' : 'gray'}
+                        >
+                          10 AM
+                        </Button>
+                        <Button
+                          onClick={() => handleTimeSelection(day, '2 PM')}
+                          colorScheme={selectedTimeString === `${day} 2 PM` ? 'teal' : 'gray'}
+                        >
+                          2 PM
+                        </Button>
+                        <Button
+                          onClick={() => handleTimeSelection(day, '6 PM')}
+                          colorScheme={selectedTimeString === `${day} 6 PM` ? 'teal' : 'gray'}
+                        >
+                          6 PM
+                        </Button>
+                      </HStack>
+                    </Box>
+                  );
+                })}
               </VStack>
             )}
           </ModalBody>
