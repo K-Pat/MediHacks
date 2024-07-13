@@ -43,7 +43,6 @@ router.post('/', async (request, response) => {
 });
 
     const sendMatchEmails = async (interview, match) => {
-        const pstTime = format(new Date(interview.selectedTime), 'MMMM d, yyyy h:mm a', { timeZone: 'America/Los_Angeles' });
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -56,14 +55,14 @@ router.post('/', async (request, response) => {
           from: 'kavyanpatel1104@gmail.com',
           to: interview.email,
           subject: 'Interview Match Found',
-          text: `You have matched with ${match.email} for an interview at ${pstTime} (PST). Please navigate to your dashboard to be able to join your meeting.`
+          text: `You have matched with ${match.email} for an interview at ${match.selectedTime} (PST). Please navigate to your dashboard to be able to join your meeting.`
         };
       
         const mailOptions2 = {
           from: 'kavyanpatel1104@gmail.com',
           to: match.email,
           subject: 'Interview Match Found',
-          text: `You have matched with ${interview.email} for an interview at ${pstTime} (PST). Please navigate to your dashboard to be able to join your meeting.`
+          text: `You have matched with ${interview.email} for an interview at ${interview.selectedTime} (PST). Please navigate to your dashboard to be able to join your meeting.`
         };
       
         await transporter.sendMail(mailOptions1);
