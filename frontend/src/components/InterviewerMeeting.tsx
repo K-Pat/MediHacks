@@ -14,10 +14,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Flex,
-  VStack,
   Button,
   Text,
   Heading,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react';
 import '../styles.css';
 
@@ -54,27 +58,58 @@ const InterviewerMeeting = () => {
     switch (interviewType) {
       case 'Advanced Sterilization Techniques':
         return [
-          "Can you explain your experience with advanced sterilization techniques?",
-          "What are the most common challenges in sterilization processes?",
-          "How do you ensure compliance with sterilization protocols?",
-          "Describe a time when you improved a sterilization process.",
-          "What are the latest advancements in sterilization technology?"
+          "What are the key principles of advanced sterilization techniques?",
+          "How do different sterilization methods compare in terms of efficacy?",
+          "What are the latest advancements in sterilization technology?",
+          "How do you ensure the sterility of reusable medical instruments?",
+          "What are the common challenges in implementing sterilization protocols?"
         ];
       case 'Remote Patient Management':
         return [
-          "How do you manage patient care remotely?",
-          "What tools and technologies do you use for remote patient monitoring?",
-          "Describe a challenging case you managed remotely.",
-          "How do you ensure patient engagement and compliance remotely?",
-          "What are the key benefits and drawbacks of remote patient management?"
+          "What are the essential components of an effective remote patient management system?",
+          "How do telehealth technologies facilitate remote patient care?",
+          "What are the best practices for monitoring patients remotely?",
+          "How can patient engagement be maintained in remote care settings?",
+          "What are the challenges and solutions in remote patient management?"
         ];
       case 'Oncology Patient Care Specialization':
         return [
-          "Describe your approach to oncology patient care.",
-          "How do you manage side effects of cancer treatment?",
-          "What is your experience with multidisciplinary cancer care?",
-          "How do you support patients emotionally and psychologically?",
-          "What are the latest developments in oncology care?"
+          "What are the key considerations in oncology patient care?",
+          "How do you manage the side effects of cancer treatments?",
+          "What role does multidisciplinary care play in oncology?",
+          "What are the latest advancements in oncology treatment?",
+          "How do you provide psychological support to oncology patients?"
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const getAnswers = () => {
+    switch (interviewType) {
+      case 'Advanced Sterilization Techniques':
+        return [
+          "Key principles include ensuring all surfaces are exposed to the sterilant, maintaining appropriate contact time, and using the correct concentration of sterilant.",
+          "Different methods such as steam, ethylene oxide, and hydrogen peroxide vapor have varying efficacies depending on the type of material and microbial load.",
+          "Latest advancements include low-temperature hydrogen peroxide plasma sterilizers and ozone-based sterilization systems.",
+          "Ensuring sterility involves proper cleaning, using validated sterilization processes, and routine monitoring using biological indicators.",
+          "Common challenges include ensuring compliance with protocols, dealing with complex instrument designs, and maintaining sterilization in large-scale operations."
+        ];
+      case 'Remote Patient Management':
+        return [
+          "Essential components include reliable telecommunication infrastructure, user-friendly software, and integration with electronic health records.",
+          "Telehealth technologies enable real-time monitoring, virtual consultations, and remote diagnostics, enhancing patient access to care.",
+          "Best practices include regular check-ins, use of wearable devices for continuous monitoring, and personalized care plans.",
+          "Maintaining engagement involves clear communication, setting expectations, and using interactive tools to keep patients involved in their care.",
+          "Challenges include ensuring data security, managing technical issues, and maintaining the quality of care. Solutions involve robust IT support and continuous training for healthcare providers."
+        ];
+      case 'Oncology Patient Care Specialization':
+        return [
+          "Key considerations include understanding the type of cancer, stage of disease, treatment options, and patient preferences.",
+          "Managing side effects involves using medications, lifestyle modifications, and supportive therapies to alleviate symptoms.",
+          "Multidisciplinary care involves collaboration among oncologists, surgeons, radiologists, and other specialists to provide comprehensive care.",
+          "Latest advancements include targeted therapies, immunotherapies, and personalized medicine based on genetic profiling of tumors.",
+          "Psychological support involves counseling, support groups, and stress management techniques to help patients cope with the emotional impact of cancer."
         ];
       default:
         return [];
@@ -82,6 +117,7 @@ const InterviewerMeeting = () => {
   };
 
   const questions = getQuestions();
+  const answers = getAnswers();
 
   return (
     <Box width="100vw" height="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" bg="#F9FAFB">
@@ -120,11 +156,21 @@ const InterviewerMeeting = () => {
           </Flex>
           <Box p={4} mt={4} borderWidth="1px" borderRadius="md" width="100%">
             <Heading size="md" textAlign="center">Questions for the Interview</Heading>
-            <VStack spacing={4} mt={4}>
+            <Accordion allowToggle>
               {questions.map((question, index) => (
-                <Text key={index}>{index + 1}. {question}</Text>
+                <AccordionItem key={index}>
+                  <AccordionButton>
+                    <Box flex="1" textAlign="left">
+                      {index + 1}. {question}
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4}>
+                    <Text fontWeight="bold">Answer: {answers[index]}</Text>
+                  </AccordionPanel>
+                </AccordionItem>
               ))}
-            </VStack>
+            </Accordion>
           </Box>
         </Flex>
       ) : (
