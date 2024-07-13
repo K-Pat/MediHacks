@@ -1,5 +1,5 @@
 // src/components/Dashboard.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
@@ -17,6 +17,9 @@ import {
 } from '@chakra-ui/react';
 import { format, addDays, set } from 'date-fns';
 import { formatISO } from 'date-fns';
+import axios from 'axios';
+import { auth } from '../firebase'; // Import Firebase auth
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Dashboard: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,11 +27,20 @@ const Dashboard: React.FC = () => {
   const [interviewType, setInterviewType] = useState('');
   const [interviewRole, setInterviewRole] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email;
 
   const days = Array.from({ length: 7 }, (_, i) => format(addDays(new Date(), i), 'EEEE MMMM d'));
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setEmail(user.email || '');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleNext = () => {
     setStep(step + 1);
@@ -38,29 +50,28 @@ const Dashboard: React.FC = () => {
     setStep(step - 1);
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     const utcTime = formatISO(new Date(selectedTime));
     const formData = {
+      email,
       interviewType,
       interviewRole,
       selectedTime: utcTime,
-      email,
     };
 
     console.log('Form Data:', formData);
-    // Simulate sending data to a backend
-    mockSendToBackend(formData);
+
+    // Send data to the backend
+    await sendToBackend(formData);
 
     onClose();
     navigate('/join-meeting', { state: { interviewType, interviewRole, email } });
   };
 
-  // Mock function to simulate sending data to a backend
-  const mockSendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; email: string }) => {
+  const sendToBackend = async (data: { interviewType: string; interviewRole: string; selectedTime: string; email: string }) => {
     try {
-      // Simulate a network request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('Data sent to backend:', data);
+      const response = await axios.post('http://localhost:5555/interviews', data);
+      console.log('Data sent to backend:', response.data);
     } catch (error) {
       console.error('Error sending data to backend:', error);
     }

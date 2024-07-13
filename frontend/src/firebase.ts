@@ -9,7 +9,7 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAw7hiTtmNVSLcWpL4C0YzJeyxTfqawXeI",
+  apiKey: "AIzaSyAw7hiTtmNVSLcWpL4C0YzJeyxTfqawXeI",
   authDomain: "hackathon-f6a54.firebaseapp.com",
   projectId: "hackathon-f6a54",
   storageBucket: "hackathon-f6a54.appspot.com",

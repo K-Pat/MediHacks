@@ -13,6 +13,7 @@ app.use(express.json());
 //Option 1: Allowing all origins with default of cors(*)
 app.use(cors());
 //Option 2: Allow custom origins
+/*
 app.use(
     cors({
         origin: 'http://localhost:3000',
@@ -25,7 +26,7 @@ app.get('/', (request, response) =>{
     console.log(request);
     return response.status(234).send("TEST GET ROUTE");
 });
-
+*/
 app.use('/interviews', interviewsRoute);
 
 mongoose
