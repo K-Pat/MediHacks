@@ -55,7 +55,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
-        const response = await axios.get("https://accredmed-fdc9f9c5af7b.herokuapp.com/interviews", {
+        const response = await axios.get("https://accredmed-server-7ff5e0b2a98f.herokuapp.com/interviews", {
           params: { email },
         });
         setInterviews(response.data.data);
@@ -104,7 +104,7 @@ const Dashboard: React.FC = () => {
   }) => {
     try {
       const response = await axios.post(
-        "https://accredmed-fdc9f9c5af7b.herokuapp.com/interviews",
+        "https://accredmed-server-7ff5e0b2a98f.herokuapp.com/interviews",
         data
       );
       console.log("Data sent to backend:", response.data);
