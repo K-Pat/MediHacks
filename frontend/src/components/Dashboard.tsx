@@ -17,6 +17,7 @@ import {
   Spacer,
   Avatar,
   Icon,
+  Divider,
 } from "@chakra-ui/react";
 import { AddIcon, CheckCircleIcon, TimeIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { format, addDays, set } from "date-fns";
@@ -229,6 +230,8 @@ const Dashboard: React.FC = () => {
                 borderRadius="md"
                 m={2}
                 w="240px"
+                boxShadow="md"
+                bg="white"
               >
                 <Flex alignItems="center">
                   <Avatar name={interview.interviewRole} />
@@ -240,9 +243,11 @@ const Dashboard: React.FC = () => {
                     </Text>
                   </Box>
                 </Flex>
+                <Divider my={3} />
                 <Button
                   mt={2}
                   colorScheme="teal"
+                  w="full"
                   onClick={() =>
                     navigate("/join-meeting", {
                       state: {
@@ -273,6 +278,8 @@ const Dashboard: React.FC = () => {
                 borderRadius="md"
                 m={2}
                 w="240px"
+                boxShadow="md"
+                bg="white"
               >
                 <Flex alignItems="center">
                   <Avatar name={interview.interviewRole} />
@@ -302,6 +309,8 @@ const Dashboard: React.FC = () => {
                 borderRadius="md"
                 m={2}
                 w="240px"
+                boxShadow="md"
+                bg="white"
               >
                 <Flex alignItems="center">
                   <Avatar name={interview.interviewRole} />
