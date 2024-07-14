@@ -16,8 +16,9 @@ import {
   Flex,
   Spacer,
   Avatar,
+  Icon,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckCircleIcon, TimeIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { format, addDays, set } from "date-fns";
 import { formatISO } from "date-fns";
 import axios from "axios";
@@ -206,7 +207,7 @@ const Dashboard: React.FC = () => {
         </HStack>
       </Flex>
 
-      <Box pt={24} px={8}>
+      <Box pt={28} px={8}>
         <Flex mb={4}>
           <Heading size="lg">Dashboard</Heading>
           <Spacer />
@@ -217,7 +218,7 @@ const Dashboard: React.FC = () => {
 
         <Box mb={8}>
           <Heading size="md" mb={4}>
-            Upcoming Interviews
+            <Icon as={ArrowRightIcon} color="blue.500" /> Upcoming Interviews
           </Heading>
           <Flex wrap="wrap">
             {upcomingInterviews.map((interview) => (
@@ -261,7 +262,7 @@ const Dashboard: React.FC = () => {
 
         <Box mb={8}>
           <Heading size="md" mb={4}>
-            Pending Matches
+            <Icon as={TimeIcon} color="yellow.500" /> Pending Matches
           </Heading>
           <Flex wrap="wrap">
             {pendingMatches.map((interview) => (
@@ -290,7 +291,7 @@ const Dashboard: React.FC = () => {
 
         <Box>
           <Heading size="md" mb={4}>
-            Past Interviews
+            <Icon as={CheckCircleIcon} color="green.500" /> Past Interviews
           </Heading>
           <Flex wrap="wrap">
             {pastInterviews.map((interview) => (
