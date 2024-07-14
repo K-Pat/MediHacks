@@ -1,19 +1,18 @@
 {
-    "name": "my-mern-project",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-      "start": "concurrently \"npm run server\" \"npm run client\"",
-      "server": "npm start --prefix backend",
-      "client": "npm run build --prefix frontend && serve -s frontend/dist",
-      "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend"
-    },
-    "dependencies": {
-      "concurrently": "^7.0.0",
-      "serve": "^14.0.1"
-    },
-    "engines": {
-      "node": "22.4"
-    }
+  "name": "my-mern-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "npm start --prefix backend",
+    "client": "npm run build --prefix frontend && serve -s frontend/dist",
+    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "dependencies": {
+    "concurrently": "^7.0.0",
+    "serve": "^14.0.1"
+  },
+  "engines": {
+    "node": "22.4"
   }
-  
+}
