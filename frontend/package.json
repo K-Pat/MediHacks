@@ -11,17 +11,24 @@
     "start": "vite"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource/cormorant-garamond": "^5.0.13",
+    "@fontsource/open-sans": "^5.0.28",
+    "@fontsource/roboto": "^5.0.13",
     "agora-rtc-react": "^2.2.0",
     "agora-rtc-sdk-ng": "^4.21.0",
     "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.1.3",
     "firebase": "^10.12.3",
     "framer-motion": "^11.2.13",
+    "html2canvas": "^1.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "vite": "^5.3.1"  
   },
   "devDependencies": {
     "@splinetool/react-spline": "^4.0.0",
@@ -34,7 +41,6 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "typescript": "^5.2.2"
   }
 }
