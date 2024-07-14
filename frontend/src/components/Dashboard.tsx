@@ -208,7 +208,7 @@ const Dashboard: React.FC = () => {
         </HStack>
       </Flex>
 
-      <Box pt={80} px={8}>
+      <Box pt={28} px={8}>
         <Flex mb={4}>
           <Heading size="lg">Dashboard</Heading>
           <Spacer />
