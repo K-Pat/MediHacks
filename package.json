@@ -5,8 +5,7 @@
     "scripts": {
       "start": "concurrently \"npm run server\" \"npm run client\"",
       "server": "npm start --prefix backend",
-      "client": "npm run build --prefix frontend && serve -s frontend/dist",
-      "heroku-postbuild": "npm run build --prefix frontend"
+      "client": "npm run build --prefix frontend && serve -s frontend/dist"
     },
     "dependencies": {
       "concurrently": "^7.0.0",
