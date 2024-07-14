@@ -234,7 +234,7 @@ const Dashboard: React.FC = () => {
                 bg="white"
               >
                 <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
+                  <Avatar name={interview.interviewRole} bg="blue.300"/>
                   <Box ml={3}>
                     <Text fontWeight="bold">{interview.interviewType}</Text>
                     <Text>{interview.interviewRole}</Text>
@@ -282,7 +282,7 @@ const Dashboard: React.FC = () => {
                 bg="white"
               >
                 <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
+                  <Avatar name={interview.interviewRole} bg="yellow.300"/>
                   <Box ml={3}>
                     <Text fontWeight="bold">{interview.interviewType}</Text>
                     <Text>{interview.interviewRole}</Text>
@@ -313,7 +313,7 @@ const Dashboard: React.FC = () => {
                 bg="white"
               >
                 <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
+                  <Avatar name={interview.interviewRole} bg="green.300"/>
                   <Box ml={3}>
                     <Text fontWeight="bold">{interview.interviewType}</Text>
                     <Text>{interview.interviewRole}</Text>
