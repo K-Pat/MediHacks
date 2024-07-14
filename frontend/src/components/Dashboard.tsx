@@ -16,8 +16,10 @@ import {
   Flex,
   Spacer,
   Avatar,
+  Icon,
+  Divider,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckCircleIcon, TimeIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { format, addDays, set } from "date-fns";
 import { formatISO } from "date-fns";
 import axios from "axios";
@@ -53,7 +55,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
-        const response = await axios.get("http://localhost:5555/interviews", {
+        const response = await axios.get("https://accredmed-fdc9f9c5af7b.herokuapp.com/interviews", {
           params: { email },
         });
         setInterviews(response.data.data);
@@ -102,7 +104,7 @@ const Dashboard: React.FC = () => {
   }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5555/interviews",
+        "https://accredmed-fdc9f9c5af7b.herokuapp.com/interviews",
         data
       );
       console.log("Data sent to backend:", response.data);
@@ -206,7 +208,7 @@ const Dashboard: React.FC = () => {
         </HStack>
       </Flex>
 
-      <Box pt={24} px={8}>
+      <Box pt={80} px={8}>
         <Flex mb={4}>
           <Heading size="lg">Dashboard</Heading>
           <Spacer />
@@ -217,7 +219,7 @@ const Dashboard: React.FC = () => {
 
         <Box mb={8}>
           <Heading size="md" mb={4}>
-            Upcoming Interviews
+            <Icon as={ArrowRightIcon} color="blue.500" /> Upcoming Interviews
           </Heading>
           <Flex wrap="wrap">
             {upcomingInterviews.map((interview) => (
@@ -228,9 +230,11 @@ const Dashboard: React.FC = () => {
                 borderRadius="md"
                 m={2}
                 w="240px"
+                boxShadow="md"
+                bg="white"
               >
                 <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
+                  <Avatar name={interview.interviewRole} bg="blue.300"/>
                   <Box ml={3}>
                     <Text fontWeight="bold">{interview.interviewType}</Text>
                     <Text>{interview.interviewRole}</Text>
@@ -239,9 +243,11 @@ const Dashboard: React.FC = () => {
                     </Text>
                   </Box>
                 </Flex>
+                <Divider my={3} />
                 <Button
                   mt={2}
                   colorScheme="teal"
+                  w="full"
                   onClick={() =>
                     navigate("/join-meeting", {
                       state: {
@@ -261,7 +267,7 @@ const Dashboard: React.FC = () => {
 
         <Box mb={8}>
           <Heading size="md" mb={4}>
-            Pending Matches
+            <Icon as={TimeIcon} color="yellow.500" /> Pending Matches
           </Heading>
           <Flex wrap="wrap">
             {pendingMatches.map((interview) => (
@@ -272,9 +278,11 @@ const Dashboard: React.FC = () => {
                 borderRadius="md"
                 m={2}
                 w="240px"
+                boxShadow="md"
+                bg="white"
               >
                 <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
+                  <Avatar name={interview.interviewRole} bg="yellow.300"/>
                   <Box ml={3}>
                     <Text fontWeight="bold">{interview.interviewType}</Text>
                     <Text>{interview.interviewRole}</Text>
@@ -290,7 +298,7 @@ const Dashboard: React.FC = () => {
 
         <Box>
           <Heading size="md" mb={4}>
-            Past Interviews
+            <Icon as={CheckCircleIcon} color="green.500" /> Past Interviews
           </Heading>
           <Flex wrap="wrap">
             {pastInterviews.map((interview) => (
@@ -301,9 +309,11 @@ const Dashboard: React.FC = () => {
                 borderRadius="md"
                 m={2}
                 w="240px"
+                boxShadow="md"
+                bg="white"
               >
                 <Flex alignItems="center">
-                  <Avatar name={interview.interviewRole} />
+                  <Avatar name={interview.interviewRole} bg="green.300"/>
                   <Box ml={3}>
                     <Text fontWeight="bold">{interview.interviewType}</Text>
                     <Text>{interview.interviewRole}</Text>
